@@ -3,13 +3,36 @@ import { NOTFOUND } from 'node:dns';
 import { waitForDebugger } from 'node:inspector';
 import path from 'node:path';
 
-const ext_to_dir = {
-    "c": "src",
-    "h": "includes",
-    "png": "assets",
-    "mp4": "assets",
-    "" : "docs"
+const categories = {
+    "":             ["md"],
+    "src":          ["c","cpp","js","ts","py","java","go","rb","rs","swift","kt","m","cs"],
+    "includes":     ["h","hpp","d.ts","hxx","inl"],
+    "web/html":     ["html","htm","xhtml"],
+    "web/css":      ["css","scss","sass","less"],
+    "web/php":      ["php","phtml"],
+    "web/xml":      ["svg","xml"],
+    "assets/img":   ["png","jpg","jpeg","gif","bmp","tiff","ico"],
+    "assets/video": ["mp4","mov","avi","webm","mkv","flv","swf"],
+    "assets/audio": ["mp3","wav","ogg","flac","aac"],
+    "assets/fonts": ["ttf","woff","woff2","otf"],
+    "docs":         ["txt","pdf","docx","xlsx","pptx","rtf","epub","mobi"],
+    "data":         ["csv"],
+    "config":       ["yaml","yml","env","ini","toml","lock","cfg","properties"],
+    "scripts":      ["sh","bash","ps1","bat","command"],
+    "executables":  ["exe","dll","so","dylib","jar"],
+    "packages":     ["zip","tar","gz","rar","7z","deb","rpm","msi","pkg"],
+    "logs":         ["log"],
+    "backups":      ["bak","old","tmp"],
+    "misc":         []
   };
+
+const extToDir = {};
+for (const [dir, exts] of Object.entries(categories)) {
+    for (const ext of exts) {
+        extToDir[ext] = dir;
+    }
+}
+
 
 function getExtension(filename) {
     var ext = path.extname(filename||'').split('.');
@@ -40,7 +63,7 @@ async function read_dir(root, cur_dir, file) {
 }
 
 function correct_dir(file) {
-    let dir = ext_to_dir[getExtension(file)];
+    let dir = extToDir[getExtension(file)];
     if (dir == undefined) {
         return "other";
     }
@@ -81,7 +104,6 @@ async function remove_if_empty(cur_dir, file) {
     } catch (err) {
         console.log(err);
     }
-
 }
 
 
