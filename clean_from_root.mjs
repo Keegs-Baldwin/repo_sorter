@@ -1,22 +1,15 @@
 import path from 'node:path';
 import fs from 'fs/promises';
 import { make_basic_dir } from './make_and_move_files.mjs';
+import { read_cur } from './move_file_to_correct_file.mjs';
 
-async function read_cur(dir) {
-    console.log(dir);
-    try {
-        const files = await fs.readdir(dir)
-            files.forEach(file => {
-                console.log(file);
-            });
-    } catch (err) {
-        console.log ("couldn't read dir");
-    }
-}
+const folders = ["src", "test", ".tools", "includes", "docs", "assets"]
 
-export function clean_dir(dir) {
+export function clean_dir(root) {
 
-    read_cur(dir);
-    make_basic_dir("/home/keegs/personal_projects/sorter/repo_sorter/src");
+    // for (let folder of folders) {
+    //     make_basic_dir(root + folder);
+    // }
+    read_cur(root, root);
     console.log("here");
 }

@@ -11,7 +11,7 @@ if (argv[2] == "help" || argv[2] == "-h" || argv[2] == "--help") {
     console.log("how to use");
 }
 
-clean_dir("/home/keegs/personal_projects/sorter/repo_sorter/");
+clean_dir("/home/keegs/personal_projects/sorter/repo_sorter");
 argv.forEach((val, index) => {
     console.log(`${index}: ${val}`);
   });
