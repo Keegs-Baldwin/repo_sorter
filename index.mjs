@@ -12,6 +12,6 @@ if (argv[2] == "help" || argv[2] == "-h" || argv[2] == "--help") {
 }
 
 clean_dir("/home/keegs/personal_projects/sorter/repo_sorter");
-argv.forEach((val, index) => {
-    console.log(`${index}: ${val}`);
-  });
+// argv.forEach((val, index) => {
+//     console.log(`${index}: ${val}`);
+//   });
