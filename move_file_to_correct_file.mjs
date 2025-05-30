@@ -1,4 +1,5 @@
 import fs from 'fs/promises';
+import { NOTFOUND } from 'node:dns';
 import { waitForDebugger } from 'node:inspector';
 import path from 'node:path';
 
@@ -51,13 +52,48 @@ export async function read_cur(root, cur_dir) {
         const files = await fs.readdir(cur_dir);
 
         for (const file of files) {
-            if (file.startsWith('.')) continue;
+            if (file.startsWith('.'))
+                continue;
 
             if (await is_dir(cur_dir, file)) {
                 await read_dir(root, cur_dir, file);
             } else {
                 let move_to = root + "/" + correct_dir(file) + "/" + file;
                 await move_file(cur_dir + "/" + file, move_to);
+            }
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+async function remove_if_empty(cur_dir, file) {
+    try {
+        let path = cur_dir + "/" + file
+        const directory = await fs.opendir(path)
+        const entry = await directory.read()
+        await directory.close()
+        if (entry === null) {
+            await console.log("removed" + cur_dir + "/" + file)
+        } else {
+            remove_empty(cur_dir + "/" + file)
+        }
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
+
+export async function remove_empty(root) {
+
+    try {
+        const files = await fs.readdir(root);
+        for (const file of files) {
+            if (file.startsWith('.'))
+                continue;
+            if (await is_dir(root, file)) {
+                await remove_if_empty(root,  file);
             }
         }
     } catch (err) {
