@@ -1,0 +1,19 @@
+{
+  "name": "repo_sorter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Keegs-Baldwin/repo_sorter.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Keegs-Baldwin/repo_sorter/issues"
+  },
+  "homepage": "https://github.com/Keegs-Baldwin/repo_sorter#readme"
+}
