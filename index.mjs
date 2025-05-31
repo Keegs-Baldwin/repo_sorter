@@ -4,21 +4,37 @@ import { argv } from 'node:process';
 import { clean_dir } from './clean_from_root.mjs';
 import { check_dir } from './check_dir.mjs';
 
+const helpFlags = new Set(['-h', '--help', 'help']);
 
-if (argv.length > 3) {
-    console.log("only one input is valid");
-    process.exit();
+const args = process.argv.slice(2);
+const pathArg = args.find(arg => !arg.startsWith('-'));
+
+
+if (!pathArg) {
+    console.error('Error: No path provided.');
+    process.exit(1);
 }
 
-if (argv[2] == "help" || argv[2] == "-h" || argv[2] == "--help") {
-    console.log("how to use");
-    process.exit();
+if (args.some(arg => helpFlags.has(arg))) {
+    console.log(`
+  Usage: repo-sorter [options]
+
+  Options:
+    -h, --help         Show help information
+    --dry-run          Simulate file operations
+  `);
+  process.exit(0);
 }
-const curDir = argv[2];
+
+const dryRun = true;
+if (args.includes("--dry-run")) {
+    dryRun = true;
+}
+const curDir = pathArg;
 const response = check_dir(curDir);
 
 if (response.safe) {
-    clean_dir(response.directory);
+    clean_dir(response.directory, dryRun);
 } else {
     console.error("❌ Error:" + response.reason);
     process.exit(84);

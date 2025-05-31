@@ -25,15 +25,19 @@ const folders = [
     "backups",
     "misc"
     ];
-export async function clean_dir(root) {
+
+export async function clean_dir(root, dryRun) {
     try {
         for (let folder of folders) {
-            await make_basic_dir(root + "/" +folder);
+            const curFolder = root + "/" + folder;
+            await make_basic_dir(curFolder, folder, dryRun);
         }
-        await read_cur(root, root);
-        await remove_empty(root);
-    } catch (err) {
-        console.error(err);
+            await read_cur(root, root, dryRun);
+            if (dryRun) {
+                console.log("[DRY RUN] Removed all unused directories created");
+            }
+            await remove_empty(root, dryRun);
+        } catch (err) {
+            console.error(err);
+        }
     }
-
-}

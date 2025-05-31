@@ -42,10 +42,13 @@ function getExtension(filename) {
     return ext[ext.length - 1];
 }
 
-async function move_file(cur_pos, to_here) {
+async function move_file(cur_pos, to_here, dryRun) {
     try {
-        // await fs.rename(cur_pos, to_here);
-        await console.log("MOVED" + cur_pos + "\tto\t" + to_here);
+        if (dryRun) {
+            console.log(`[DRY RUN] Moved: ${cur_pos}  →  ${to_here}`);
+        } else {
+            await fs.rename(cur_pos, to_here);
+        }
     } catch (err) {
         console.error(err);
         throw err;
@@ -61,9 +64,9 @@ async function is_dir(cur_dir, file) {
     }
 }
 
-async function read_dir(root, cur_dir, file) {
+async function read_dir(root, cur_dir, file, dryRun) {
     cur_dir = cur_dir + "/" + file;
-    read_cur(root, cur_dir);
+    await read_cur(root, cur_dir, dryRun);
 }
 
 function correct_dir(file) {
@@ -74,7 +77,7 @@ function correct_dir(file) {
     return dir;
 }
 
-export async function read_cur(root, cur_dir) {
+export async function read_cur(root, cur_dir, dryRun) {
     try {
         const files = await fs.readdir(cur_dir);
 
@@ -82,10 +85,10 @@ export async function read_cur(root, cur_dir) {
             if (file.startsWith('.'))
                 continue;
             if (await is_dir(cur_dir, file)) {
-                await read_dir(root, cur_dir, file);
+                await read_dir(root, cur_dir, file, dryRun);
             } else {
                 let move_to = root + "/" + correct_dir(file) + "/" + file;
-                await move_file(cur_dir + "/" + file, move_to);
+                await move_file(cur_dir + "/" + file, move_to, dryRun);
             }
         }
     } catch (err) {
@@ -94,16 +97,20 @@ export async function read_cur(root, cur_dir) {
     }
 }
 
-async function remove_if_empty(cur_dir, file) {
+async function remove_if_empty(cur_dir, file, dryRun) {
     try {
         let path = cur_dir + "/" + file
         const directory = await fs.opendir(path)
         const entry = await directory.read()
         await directory.close()
         if (entry === null) {
-            await fs.rmdir(path);
+            if (dryRun) {
+                console.log(`[DRY RUN] Deleted empty directory: ${path}`);
+            } else {
+                await fs.rmdir(path);
+            }
         } else {
-            remove_empty(path)
+            await remove_empty(path, dryRun)
         }
     } catch (err) {
         console.error(err);
@@ -112,7 +119,7 @@ async function remove_if_empty(cur_dir, file) {
 }
 
 
-export async function remove_empty(root) {
+export async function remove_empty(root, dryRun) {
 
     try {
         const files = await fs.readdir(root);
@@ -120,7 +127,7 @@ export async function remove_empty(root) {
             if (file.startsWith('.'))
                 continue;
             if (await is_dir(root, file)) {
-                await remove_if_empty(root, file);
+                await remove_if_empty(root, file, dryRun);
             }
         }
     } catch (err) {
