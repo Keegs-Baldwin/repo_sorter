@@ -6,8 +6,8 @@ import fs from 'fs/promises';
 
 export async function make_basic_dir(dir) {
     try {
-    //   await fs.mkdir(dir, { recursive: false });
-        await console.log(`made ${dir}`);
+      await fs.mkdir(dir, { recursive: true });
+        // await console.log(`made ${dir}`);
     } catch (err) {
       if (err.code !== 'EEXIST') {
         console.error(`Error creating directory "${dir}":`, err);

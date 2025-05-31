@@ -41,14 +41,14 @@ function getExtension(filename) {
 
 async function move_file(cur_pos, to_here) {
     try {
-        // await fs.rename(cur_pos, to_here);
-        await console.log("MOVED" + cur_pos + "\tto\t" + to_here);
+        await fs.rename(cur_pos, to_here);
+        // await console.log("MOVED" + cur_pos + "\tto\t" + to_here);
     } catch (err) {
         console.log(err);
     }
 }
 
-async function is_dir (cur_dir, file) {
+async function is_dir(cur_dir, file) {
     try {
         let stat = await fs.lstat(cur_dir + "/" + file);
         return stat.isDirectory();
@@ -97,9 +97,9 @@ async function remove_if_empty(cur_dir, file) {
         const entry = await directory.read()
         await directory.close()
         if (entry === null) {
-            await console.log("removed" + cur_dir + "/" + file)
+            await fs.rmdir(path);
         } else {
-            remove_empty(cur_dir + "/" + file)
+            remove_empty(path)
         }
     } catch (err) {
         console.log(err);
@@ -115,7 +115,7 @@ export async function remove_empty(root) {
             if (file.startsWith('.'))
                 continue;
             if (await is_dir(root, file)) {
-                await remove_if_empty(root,  file);
+                await remove_if_empty(root, file);
             }
         }
     } catch (err) {

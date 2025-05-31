@@ -25,11 +25,11 @@ const folders = [
     "backups",
     "misc"
     ];
-export function clean_dir(root) {
+export async function clean_dir(root) {
 
     for (let folder of folders) {
-        make_basic_dir(root + "/" +folder);
+        await make_basic_dir(root + "/" +folder);
     }
-    read_cur(root, root);
-    remove_empty(root);
+    await read_cur(root, root);
+    await remove_empty(root);
 }
