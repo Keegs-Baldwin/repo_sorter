@@ -1,8 +1,12 @@
 {
   "name": "repo_sorter",
   "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "repo-sorter": "./index.mjs"
+  },
   "description": "",
-  "main": "index.js",
+  "main": "index.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -1,5 +1,5 @@
 
-import { make_basic_dir } from './make_and_move_files.mjs';
+import { make_basic_dir } from './make_basic_dirs.mjs';
 import { read_cur, remove_empty } from './move_file_to_correct_file.mjs';
 
 const folders = [

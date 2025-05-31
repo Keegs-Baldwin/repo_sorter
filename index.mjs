@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 
 import { argv } from 'node:process';
 import { clean_dir } from './clean_from_root.mjs';
@@ -22,7 +23,7 @@ if (response.safe) {
     console.error("❌ Error:" + response.reason);
     process.exit(84);
 }
-
+// process.exit()
 // argv.forEach((val, index) => {
 //     console.log(`${index}: ${val}`);
 //   });

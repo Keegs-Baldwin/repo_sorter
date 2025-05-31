@@ -1,6 +1,4 @@
 import fs from 'fs/promises';
-import { NOTFOUND } from 'node:dns';
-import { waitForDebugger } from 'node:inspector';
 import path from 'node:path';
 
 const categories = {
@@ -25,6 +23,11 @@ const categories = {
     "backups":      ["bak","old","tmp"],
     "misc":         []
   };
+
+//   const exceptions = {
+//     "README.md" : ""
+
+//   }
 
 const extToDir = {};
 for (const [dir, exts] of Object.entries(categories)) {
