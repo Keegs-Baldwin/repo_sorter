@@ -41,8 +41,8 @@ function getExtension(filename) {
 
 async function move_file(cur_pos, to_here) {
     try {
-        await fs.rename(cur_pos, to_here);
-        // await console.log("MOVED" + cur_pos + "\tto\t" + to_here);
+        // await fs.rename(cur_pos, to_here);
+        await console.log("MOVED" + cur_pos + "\tto\t" + to_here);
     } catch (err) {
         console.log(err);
     }
