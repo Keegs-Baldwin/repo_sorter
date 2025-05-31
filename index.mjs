@@ -1,21 +1,18 @@
 #!/usr/bin/env node
+import { clean_dir } from "./clean_from_root.mjs";
+import { check_dir } from "./check_dir.mjs";
 
-import { argv } from 'node:process';
-import { clean_dir } from './clean_from_root.mjs';
-import { check_dir } from './check_dir.mjs';
-
-const helpFlags = new Set(['-h', '--help', 'help']);
+const helpFlags = new Set(["-h", "--help", "help"]);
 
 const args = process.argv.slice(2);
-const pathArg = args.find(arg => !arg.startsWith('-'));
-
+const pathArg = args.find((arg) => !arg.startsWith("-"));
 
 if (!pathArg) {
-    console.error('Error: No path provided.');
+    console.error("Error: No path provided.");
     process.exit(1);
 }
 
-if (args.some(arg => helpFlags.has(arg))) {
+if (args.some((arg) => helpFlags.has(arg))) {
     console.log(`
   Usage: repo-sorter [options]
 
@@ -23,7 +20,7 @@ if (args.some(arg => helpFlags.has(arg))) {
     -h, --help         Show help information
     --dry-run          Simulate file operations
   `);
-  process.exit(0);
+    process.exit(0);
 }
 
 const dryRun = true;

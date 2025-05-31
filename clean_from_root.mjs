@@ -1,6 +1,5 @@
-
-import { make_basic_dir } from './make_basic_dirs.mjs';
-import { read_cur, remove_empty } from './move_file_to_correct_file.mjs';
+import { make_basic_dir } from "./make_basic_dirs.mjs";
+import { read_cur, remove_empty } from "./move_file_to_correct_file.mjs";
 
 const folders = [
     "src",
@@ -23,8 +22,8 @@ const folders = [
     "packages",
     "logs",
     "backups",
-    "misc"
-    ];
+    "misc",
+];
 
 export async function clean_dir(root, dryRun) {
     try {
@@ -32,12 +31,12 @@ export async function clean_dir(root, dryRun) {
             const curFolder = root + "/" + folder;
             await make_basic_dir(curFolder, folder, dryRun);
         }
-            await read_cur(root, root, dryRun);
-            if (dryRun) {
-                console.log("[DRY RUN] Removed all unused directories created");
-            }
-            await remove_empty(root, dryRun);
-        } catch (err) {
-            console.error(err);
+        await read_cur(root, root, dryRun);
+        if (dryRun) {
+            console.log("[DRY RUN] Removed all unused directories created");
         }
+        await remove_empty(root, dryRun);
+    } catch (err) {
+        console.error(err);
     }
+}

@@ -1,28 +1,42 @@
-import fs from 'fs/promises';
-import path from 'node:path';
+import fs from "fs/promises";
+import path from "node:path";
 
 const categories = {
-    "":             ["md"],
-    "src":          ["c","cpp","js","ts","py","java","go","rb","rs","swift","kt","m","cs"],
-    "includes":     ["h","hpp","d.ts","hxx","inl"],
-    "web/html":     ["html","htm","xhtml"],
-    "web/css":      ["css","scss","sass","less"],
-    "web/php":      ["php","phtml"],
-    "web/xml":      ["svg","xml"],
-    "assets/img":   ["png","jpg","jpeg","gif","bmp","tiff","ico"],
-    "assets/video": ["mp4","mov","avi","webm","mkv","flv","swf"],
-    "assets/audio": ["mp3","wav","ogg","flac","aac"],
-    "assets/fonts": ["ttf","woff","woff2","otf"],
-    "docs":         ["txt","pdf","docx","xlsx","pptx","rtf","epub","mobi"],
-    "data":         ["csv"],
-    "config":       ["yaml","yml","env","ini","toml","lock","cfg","properties"],
-    "scripts":      ["sh","bash","ps1","bat","command"],
-    "executables":  ["exe","dll","so","dylib","jar"],
-    "packages":     ["zip","tar","gz","rar","7z","deb","rpm","msi","pkg"],
-    "logs":         ["log"],
-    "backups":      ["bak","old","tmp"],
-    "misc":         []
-  };
+    "": ["md"],
+    src: [
+        "c",
+        "cpp",
+        "js",
+        "ts",
+        "py",
+        "java",
+        "go",
+        "rb",
+        "rs",
+        "swift",
+        "kt",
+        "m",
+        "cs",
+    ],
+    includes: ["h", "hpp", "d.ts", "hxx", "inl"],
+    "web/html": ["html", "htm", "xhtml"],
+    "web/css": ["css", "scss", "sass", "less"],
+    "web/php": ["php", "phtml"],
+    "web/xml": ["svg", "xml"],
+    "assets/img": ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "ico"],
+    "assets/video": ["mp4", "mov", "avi", "webm", "mkv", "flv", "swf"],
+    "assets/audio": ["mp3", "wav", "ogg", "flac", "aac"],
+    "assets/fonts": ["ttf", "woff", "woff2", "otf"],
+    docs: ["txt", "pdf", "docx", "xlsx", "pptx", "rtf", "epub", "mobi"],
+    data: ["csv"],
+    config: ["yaml", "yml", "env", "ini", "toml", "lock", "cfg", "properties"],
+    scripts: ["sh", "bash", "ps1", "bat", "command"],
+    executables: ["exe", "dll", "so", "dylib", "jar"],
+    packages: ["zip", "tar", "gz", "rar", "7z", "deb", "rpm", "msi", "pkg"],
+    logs: ["log"],
+    backups: ["bak", "old", "tmp"],
+    misc: [],
+};
 
 //   const exceptions = {
 //     "README.md" : ""
@@ -36,9 +50,8 @@ for (const [dir, exts] of Object.entries(categories)) {
     }
 }
 
-
 function getExtension(filename) {
-    var ext = path.extname(filename||'').split('.');
+    var ext = path.extname(filename || "").split(".");
     return ext[ext.length - 1];
 }
 
@@ -82,8 +95,7 @@ export async function read_cur(root, cur_dir, dryRun) {
         const files = await fs.readdir(cur_dir);
 
         for (const file of files) {
-            if (file.startsWith('.'))
-                continue;
+            if (file.startsWith(".")) continue;
             if (await is_dir(cur_dir, file)) {
                 await read_dir(root, cur_dir, file, dryRun);
             } else {
@@ -99,10 +111,10 @@ export async function read_cur(root, cur_dir, dryRun) {
 
 async function remove_if_empty(cur_dir, file, dryRun) {
     try {
-        let path = cur_dir + "/" + file
-        const directory = await fs.opendir(path)
-        const entry = await directory.read()
-        await directory.close()
+        let path = cur_dir + "/" + file;
+        const directory = await fs.opendir(path);
+        const entry = await directory.read();
+        await directory.close();
         if (entry === null) {
             if (dryRun) {
                 console.log(`[DRY RUN] Deleted empty directory: ${path}`);
@@ -110,7 +122,7 @@ async function remove_if_empty(cur_dir, file, dryRun) {
                 await fs.rmdir(path);
             }
         } else {
-            await remove_empty(path, dryRun)
+            await remove_empty(path, dryRun);
         }
     } catch (err) {
         console.error(err);
@@ -118,14 +130,11 @@ async function remove_if_empty(cur_dir, file, dryRun) {
     }
 }
 
-
 export async function remove_empty(root, dryRun) {
-
     try {
         const files = await fs.readdir(root);
         for (const file of files) {
-            if (file.startsWith('.'))
-                continue;
+            if (file.startsWith(".")) continue;
             if (await is_dir(root, file)) {
                 await remove_if_empty(root, file, dryRun);
             }
