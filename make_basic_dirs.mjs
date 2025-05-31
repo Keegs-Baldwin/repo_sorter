@@ -12,5 +12,6 @@ export async function make_basic_dir(dir) {
       if (err.code !== 'EEXIST') {
         console.error(`Error creating directory "${dir}":`, err);
       }
+      throw err;
     }
   }

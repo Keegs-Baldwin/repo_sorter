@@ -47,7 +47,8 @@ async function move_file(cur_pos, to_here) {
         // await fs.rename(cur_pos, to_here);
         await console.log("MOVED" + cur_pos + "\tto\t" + to_here);
     } catch (err) {
-        console.log(err);
+        console.error(err);
+        throw err;
     }
 }
 
@@ -56,7 +57,7 @@ async function is_dir(cur_dir, file) {
         let stat = await fs.lstat(cur_dir + "/" + file);
         return stat.isDirectory();
     } catch (err) {
-        console.log("is_dir" + err);
+        console.error(err);
     }
 }
 
@@ -80,7 +81,6 @@ export async function read_cur(root, cur_dir) {
         for (const file of files) {
             if (file.startsWith('.'))
                 continue;
-
             if (await is_dir(cur_dir, file)) {
                 await read_dir(root, cur_dir, file);
             } else {
@@ -89,7 +89,8 @@ export async function read_cur(root, cur_dir) {
             }
         }
     } catch (err) {
-        console.log(err);
+        console.error(err);
+        throw err;
     }
 }
 
@@ -105,7 +106,8 @@ async function remove_if_empty(cur_dir, file) {
             remove_empty(path)
         }
     } catch (err) {
-        console.log(err);
+        console.error(err);
+        throw err;
     }
 }
 
@@ -122,6 +124,7 @@ export async function remove_empty(root) {
             }
         }
     } catch (err) {
-        console.log(err);
+        console.error(err);
+        throw err;
     }
 }

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "bin": {
-    "repo-sorter": "./index.mjs"
+    "repo_sorter": "./index.mjs"
   },
   "description": "",
   "main": "index.mjs",

@@ -26,10 +26,14 @@ const folders = [
     "misc"
     ];
 export async function clean_dir(root) {
-
-    for (let folder of folders) {
-        await make_basic_dir(root + "/" +folder);
+    try {
+        for (let folder of folders) {
+            await make_basic_dir(root + "/" +folder);
+        }
+        await read_cur(root, root);
+        await remove_empty(root);
+    } catch (err) {
+        console.error(err);
     }
-    await read_cur(root, root);
-    await remove_empty(root);
+
 }
