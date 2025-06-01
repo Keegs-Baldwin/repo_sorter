@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "type": "module",
     "bin": {
-        "repo_sorter": "./index.mjs"
+        "repo_sorter": "index.mjs"
     },
     "description": "",
     "main": "index.mjs",
@@ -19,5 +19,8 @@
     "bugs": {
         "url": "https://github.com/Keegs-Baldwin/repo_sorter/issues"
     },
-    "homepage": "https://github.com/Keegs-Baldwin/repo_sorter#readme"
+    "homepage": "https://github.com/Keegs-Baldwin/repo_sorter#readme",
+    "dependencies": {
+        "repo_sorter": "^1.0.0"
+    }
 }

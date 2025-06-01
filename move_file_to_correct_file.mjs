@@ -38,11 +38,6 @@ const categories = {
     misc: [],
 };
 
-//   const exceptions = {
-//     "README.md" : ""
-
-//   }
-
 const extToDir = {};
 for (const [dir, exts] of Object.entries(categories)) {
     for (const ext of exts) {
@@ -142,7 +137,6 @@ async function remove_if_empty(cur_dir, file, dryRun) {
         }
     } catch (err) {
         if (err.code === "ENOENT") {
-            // Silently ignore missing directory
             return;
         }
         console.error(err);
