@@ -95,7 +95,7 @@ async function read_dir(root, cur_dir, file, dryRun) {
 function correct_dir(file) {
     let dir = extToDir[getExtension(file)];
     if (dir == undefined) {
-        return "other";
+        return "misc";
     }
     return dir;
 }
