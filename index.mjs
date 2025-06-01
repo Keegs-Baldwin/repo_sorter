@@ -7,11 +7,6 @@ const helpFlags = new Set(["-h", "--help", "help"]);
 const args = process.argv.slice(2);
 const pathArg = args.find((arg) => !arg.startsWith("-"));
 
-if (!pathArg) {
-    console.error("Error: No path provided.");
-    process.exit(1);
-}
-
 if (args.some((arg) => helpFlags.has(arg))) {
     console.log(`
   Usage: repo-sorter [options]
@@ -23,7 +18,12 @@ if (args.some((arg) => helpFlags.has(arg))) {
     process.exit(0);
 }
 
-const dryRun = true;
+if (!pathArg) {
+    console.error("Error: No path provided.");
+    process.exit(1);
+}
+
+const dryRun = false;
 if (args.includes("--dry-run")) {
     dryRun = true;
 }

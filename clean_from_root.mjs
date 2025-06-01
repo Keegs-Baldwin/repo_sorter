@@ -23,6 +23,7 @@ const folders = [
     "logs",
     "backups",
     "misc",
+    "other",
 ];
 
 export async function clean_dir(root, dryRun) {

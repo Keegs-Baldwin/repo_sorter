@@ -68,11 +68,26 @@ async function move_file(cur_pos, to_here, dryRun) {
     }
 }
 
+async function exists(path) {
+    try {
+        await fs.access(path);
+        return true;
+    } catch (err) {
+        return false;
+    }
+}
+
 async function is_dir(cur_dir, file) {
     try {
-        let stat = await fs.lstat(cur_dir + "/" + file);
-        return stat.isDirectory();
+        if (await exists(cur_dir)) {
+            let stat = await fs.lstat(cur_dir + "/" + file);
+            return stat.isDirectory();
+        }
+        return false;
     } catch (err) {
+        if (err.code === "ENOENT") {
+            return;
+        }
         console.error(err);
     }
 }
@@ -111,20 +126,25 @@ export async function read_cur(root, cur_dir, dryRun) {
 
 async function remove_if_empty(cur_dir, file, dryRun) {
     try {
-        let path = cur_dir + "/" + file;
-        const directory = await fs.opendir(path);
+        let path_var = cur_dir + "/" + file;
+        const directory = await fs.opendir(path_var);
         const entry = await directory.read();
         await directory.close();
         if (entry === null) {
             if (dryRun) {
-                console.log(`[DRY RUN] Deleted empty directory: ${path}`);
+                console.log(`[DRY RUN] Deleted empty directory: ${path_var}`);
             } else {
-                await fs.rmdir(path);
+                await fs.rmdir(path_var);
+                await remove_empty(cur_dir, dryRun);
             }
         } else {
-            await remove_empty(path, dryRun);
+            await remove_empty(path_var, dryRun);
         }
     } catch (err) {
+        if (err.code === "ENOENT") {
+            // Silently ignore missing directory
+            return;
+        }
         console.error(err);
         throw err;
     }
